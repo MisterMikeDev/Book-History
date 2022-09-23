@@ -1,15 +1,22 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { createRoot } from "react-dom/client";
+import RequestList from "./Pages/RequestList";
+import Login from "./Pages/Login";
+import UserContext from "./Context/DataContext";
 import Header from "./Components/Header";
-import Home from "./Components/Home";
-import "./Global.scss";
-createRoot(document.getElementById("main") as HTMLElement).render(
-    <BrowserRouter>
-        <Header />
-        <div className="AppCenter">
-            <Routes>
-                <Route path="/" element={<Home />} />
-            </Routes>
-        </div>
-    </BrowserRouter>
-);
+import { useApi } from "./Hooks/useApi";
+export default function App() {
+    const { response } = useApi();
+    return (
+        <UserContext.Provider value={response}>
+            <BrowserRouter>
+                <Header />
+                <div className="App bg-indigo-100 py-6 md:py-12 h-full">
+                    <Routes>
+                        <Route path="/" element={<RequestList />} />
+                        <Route path="/account/login" element={<Login />} />
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </UserContext.Provider>
+    );
+}
